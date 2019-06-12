@@ -1,0 +1,452 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Color Transformer</title>
+        <style>
+			.heading { font-family:Verdana, Geneva, sans-serif; color:#101010; text-align:center;}
+			.label   { font-family:Verdana, Geneva, sans-serif; color:#202020; text-align:right;font-size:75%}
+			.units   { font-family:Verdana, Geneva, sans-serif; color:#A0A0A0; text-align:left;font-size:50%}
+			.input   { font-family:"Consolas", Courier, monospace;}
+		</style>
+	</head>
+
+	<body>
+    	<table style="width:100%">
+        	<tr>
+               <td>
+	               <div style="background-color: #f5f5f5;
+                   			   border: 1px solid #c5c5c5;
+                               border-radius: 15px;
+                               text-align:center">
+                      <p class="heading">RGB</p>
+                      <table style="width:100%">
+                      	 <tr>
+                            <td class="label">Red:</td>
+                            <td><input	type="text" id="red" class="input" size="3" 
+                            			maxlength="3" min="0" max="255"/></td>
+                            <td class="units">(0-255)</td>
+                         </tr>
+                      	 <tr>
+                            <td class="label">Green:</td>
+                             <td><input type="text" id="green" class="input"  size="3" 
+                             			maxlength="3" min="0" max="255"/></td>
+                            <td class="units">(0-255)</td>
+                         </tr>
+                      	 <tr>
+                            <td class="label">Blue:</td>
+                             <td><input type="text" id="blue" class="input"  size="3" 
+                             			maxlength="3" min="0" max="255"/></td>
+                            <td class="units">(0-255)</td>
+                         </tr>
+                         <tr>
+                            <td class="label">&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td class="units">&nbsp;</td>
+                         </tr>
+                      </table>
+                   </div>
+               </td>
+               <td>
+	               <div style="background-color: #f5f5f5;
+                   			   border: 1px solid #c5c5c5;
+                               border-radius: 15px;
+                               text-align:center">
+                      <p class="heading">HSL</p>
+                      <table style="width:100%">
+                      	 <tr>
+                            <td class="label">Hue:</td>
+                             <td><input type="text" id="hue" class="input" size="3" 
+                             			maxlength="3" min="0" max="359"/></td>
+                            <td class="units">&deg; (0-359)</td>
+                         </tr>
+                      	 <tr>
+                            <td class="label">Saturation:</td>
+                             <td><input type="text" id="saturation" class="input" size="3" 
+                             			maxlength="3" min="0" max="100"/></td>
+                            <td class="units">% (0-100)</td>
+                         </tr>
+                      	 <tr>
+                            <td class="label">Luminosity:</td>
+                             <td><input type="text" id="luminosity" class="input" size="3" 
+                             			maxlength="3" min="0" max="100"/></td>
+                            <td class="units">% (0-100)</td>
+                         </tr>
+                         <tr>
+                            <td class="label">&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td class="units">&nbsp;</td>
+                         </tr>
+                      </table>
+                   </div>
+			   </td>
+               <td>
+               	   <div style="background-color: #f5f5f5;
+                   			   border: 1px solid #c5c5c5;
+                               border-radius: 15px;
+                               text-align:center">
+                      <p class="heading">CMYK</p>
+                      <table style="width:100%">
+                      	 <tr>
+                            <td class="label">Cyan:</td>
+                             <td><input type="text" id="cyan" class="input" size="3" 
+                             			maxlength="3" min="0" max="255"/></td>
+                            <td class="units">(0-255)</td>
+                         </tr>
+                      	 <tr>
+                            <td class="label">Magenta:</td>
+                             <td><input type="text" id="magenta" class="input" size="3" 
+                             			maxlength="3" min="0" max="255"/></td>
+                            <td class="units">(0-255)</td>
+                         </tr>
+                      	 <tr>
+                            <td class="label">Yellow:</td>
+                             <td><input type="text" id="yellow" class="input" size="3" 
+                             			maxlength="3" min="0" max="255"/></td>
+                            <td class="units">(0-255)</td>
+                         </tr>
+                      	 <tr>
+                            <td class="label">Key:</td>
+                             <td><input type="text" id="key" class="input" size="3" 
+                             			maxlength="3" min="0" max="255"/></td>
+                            <td class="units">(0-255)</td>
+                         </tr>
+                      </table>
+                   </div>
+  				</td>                   
+            </tr>
+        </table>
+        <br/>
+        <table style="width:100%">
+         	<tr>
+            	<td>&nbsp;</td>
+                <td>
+                   <div style="background-color: #f5f5f5;
+                   			   border: 3px solid black;
+                               border-radius: 15px;
+                               box-shadow: 4px 4px 15px rgb(35, 35, 35);"
+                        id="theColor">
+                      <br/><br/><br/><br/><br/><br/>&nbsp;
+                   </div>
+                  
+                </td>
+            	<td>&nbsp;</td>                
+            </tr>
+        </table>
+        
+        <script>
+		    /*********************************************
+			 * EL
+			 * Just a simple helper function to return an element
+			 * based on a given ID. 
+			 *********************************************/
+            function el(id) 
+			{
+                return document.getElementById(id);
+            }
+            
+			/**********************************************
+			 * VERIFY NUMBER BETWEEN RANGE
+			 * Another helper function to verify that
+			 *    begin <= num <= end
+			 ***********************************************/
+            function verifyNumBetweenRange(num, begin, end) 
+			{
+                if (num >= begin && num <= end) 
+                    return true;
+				else 
+                    return false;
+            }
+			
+	        /**********************************************
+			 * CHECK VALUE
+			 * If the condition is true:
+			 *    begin <= el(tag).value <= end
+			 ***********************************************/
+            function checkValue(tag, begin, end) 
+			{
+				var tagValue = el(tag).value;
+
+				// blank means no error but not a valid value
+				if (tagValue == "")
+				{
+					el(tag).style.backgroundColor = "#FFFFFF";
+					return false;
+				}
+				// in range means no error and valid value
+                if (tagValue >= begin && tagValue <= end) 
+				{
+					el(tag).style.backgroundColor = "#FFFFFF";
+                    return true;
+				}
+				// anything else is an error and invalid
+				else 
+				{
+					el(tag).style.backgroundColor = "#FF0000";
+                    return false;
+				}
+            }
+
+            
+			/**********************************************
+			 * RGB CHANGE
+			 * Handle the event when a number is pressed in
+			 * the RGB values
+			 **********************************************/
+            var rgbChange = function(ev) 
+			{
+				// do nothing if the keycode is not within range
+                if ((ev.keyCode < 48 || ev.keyCode > 90) && ev.keyCode != 8) 
+                    return;
+
+				// check for error
+				if (!checkValue("red",   0, 255) ||
+					!checkValue("green", 0, 255) ||
+					!checkValue("blue",  0, 255))
+					return;
+                
+				// set the value
+                var red   = el("red"  ).value;
+                var green = el("green").value;
+                var blue  = el("blue" ).value;
+                rgbToHSL (red, green, blue);
+                rgbToCMYK(red, green, blue);
+                el("theColor").style.backgroundColor = "rgb(" + red + ", " + green + ", " + blue + ")";
+            }
+
+            /*******************************************
+			 * HSL CHANGE
+			 * Handle the events when a number is pressed in
+			 * the HSL values
+			 *******************************************/            
+            var hslChange = function(ev) 
+			{
+				// do nothing if the keycode is not within range
+                if ((ev.keyCode < 48 || ev.keyCode > 90) && ev.keyCode != 8) 
+                    return;
+
+				// check for error
+				if (!checkValue("hue",        0, 359) ||
+					!checkValue("saturation", 0, 100) ||
+					!checkValue("luminosity", 0, 100))
+					return;
+
+				// SET THE VALUE                
+                var hue        = el("hue"       ).value;
+                var saturation = el("saturation").value;
+                var luminosity = el("luminosity").value;
+                hslToRGB(hue, saturation, luminosity);
+                rgbToCMYK(el("red").value, el("green").value, el("blue").value);
+            }
+            
+			/*************************************************
+			 * CMYK CHANGE
+			 * Handle the events when a number is pressed in
+			 * the CMYK values
+			 *************************************************/
+            var cmykChange = function(ev) 
+			{
+                // do nothing if the keycode is not within range
+                if ((ev.keyCode < 48 || ev.keyCode > 90) && ev.keyCode != 8) 
+                    return;
+					
+  				// check for error
+				if (!checkValue("cyan",    0, 255) ||
+					!checkValue("magenta", 0, 255) ||
+					!checkValue("yellow",  0, 255) ||
+					!checkValue("key",     0, 255))
+					return;
+
+				// Set the value                
+                var cyan    = el("cyan"   ).value;
+                var magenta = el("magenta").value;
+                var yellow  = el("yellow" ).value;
+                var key     = el("key"    ).value;
+                cmykToRGB(cyan, magenta, yellow, key);
+                rgbToHSL(el("red").value, el("green").value, el("blue").value);
+            }
+            
+			/**********************************************
+			 * RGB TO HSL
+			 * Convert RGB into HSL
+			 **********************************************/
+            function rgbToHSL(red, green, blue) 
+			{
+				// set the value between 0.0 and 1.0
+                red   /= 255;
+                green /= 255;
+                blue  /= 255;
+                
+				//  find the various metrics
+                var min = Math.min(red, green, blue);
+                var max = Math.max(red, green, blue);
+                var delta = max - min;              // spread of colors
+
+                var luminosity = (max + min) / 2;   // luminosity is the average
+                var hue        = 0;
+                var saturation = 0;
+                
+				// if there actually is a saturation (not grey), then ...
+                if (delta != 0) 
+				{
+                    if (luminosity < 0.5) 
+                        saturation = delta / (max + min);
+					else 
+                        saturation = delta / (2 - max - min);
+                    
+                    var delR = (((max - red  ) / 6) + (delta / 2)) / delta;
+                    var delG = (((max - green) / 6) + (delta / 2)) / delta;
+                    var delB = (((max - blue ) / 6) + (delta / 2)) / delta;
+                    
+                    if (red == max)
+                        hue = delB - delG;
+                    else if (green == max)
+                        hue = ((1.0 / 3.0) + delR) - delB;
+                    else if (blue == max)
+                        hue = ((2.0 / 3.0) + delG) - delR;
+
+                    if (hue < 0)
+                        hue++;
+                    if (hue > 1)
+                        hue--;
+                }
+                
+                el("hue"       ).value = Math.round(hue        * 359);
+                el("luminosity").value = Math.round(luminosity * 100);
+                el("saturation").value = Math.round(saturation * 100);
+            }
+            
+			/**********************************************
+			 * RGB TO CMYK
+			 * Convert RGB into CMYK
+			 **********************************************/
+            function rgbToCMYK(red, green, blue) 
+			{
+				// convert to between 0.0 and 1.0
+                red   /= 255
+                green /= 255
+                blue  /= 255
+                
+                var key = Math.min(1 - red, 1 - green, 1 - blue);
+
+                // calculate the other colors
+                var cyan    = (1 - red   - key) / (1 - key);
+                var magenta = (1 - green - key) / (1 - key);
+                var yellow  = (1 - blue  - key) / (1 - key);
+                
+                el("key"    ).value = Math.round(key     * 255);
+                el("cyan"   ).value = Math.round(cyan    * 255);
+                el("magenta").value = Math.round(magenta * 255);
+                el("yellow" ).value = Math.round(yellow  * 255);
+            }
+            
+			/**********************************************
+			 * HSL TO RBG
+			 * Convert HSL into RBG
+			 **********************************************/
+            function hslToRGB(hue, saturation, luminosity) 
+			{
+				// convert to between 0.0 and 1.0
+                hue        /= 359;
+                saturation /= 100;
+                luminosity /= 100;
+                
+                var red   = 0;
+                var green = 0;
+                var blue  = 0;
+                
+                if (saturation == 0) 
+				{
+                    red   = luminosity;
+                    green = luminosity;
+                    blue  = luminosity;
+                } 
+				else 
+				{
+                    var valB = 0;
+                    var valA = 0;
+                    
+                    if (luminosity < 0.5) 
+                        valB = luminosity * (1 + saturation);
+                    else
+                        valB = (luminosity + saturation) - (saturation * luminosity);
+                    
+                    valA = (2 * luminosity) - valB;
+                    
+                    red   = hueToRGB(valA, valB, hue + (1 / 3.0));
+                    green = hueToRGB(valA, valB, hue);
+                    blue  = hueToRGB(valA, valB, hue - (1 / 3.0));
+                }
+                
+                el("red"  ).value = Math.round(red * 255);
+                el("green").value = Math.round(green * 255);
+                el("blue" ).value = Math.round(blue * 255);
+                el("theColor").style.backgroundColor = "rgb(" + 
+						Math.round(red   * 255) + ", " + 
+						Math.round(green * 255) + ", " + 
+						Math.round(blue  * 255) + ")";
+            }
+
+            /****************************************************
+			 * HUE TO RGB
+			 * Helper function for HSLTORGB
+			 ****************************************************/            
+            function hueToRGB(v1, v2, vH)
+            {
+                if (vH < 0)
+                    vH++;
+ 
+                if (vH > 1)
+                    vH--
+
+                if ((6 * vH) < 1)
+                    return (v1 + ((v2 - v1) * 6 * vH));
+
+                if ((2 * vH) < 1)
+                    return v2;
+
+                if ((3 * vH) < 2)
+                    return v1 + ((v2 - v1) * ((2 / 3.0) - vH) * 6);
+
+                return v1;
+            }
+            
+			/**********************************************
+			 * CMYK TO RBG
+			 * Convert CMYK into RBG
+			 **********************************************/
+            function cmykToRGB(cyan, magenta, yellow, key) 
+			{
+				// convert to between 0.0 and 1.0
+                cyan    /= 255;
+                magenta /= 255;
+                yellow  /= 255;
+                key     /= 255;
+                
+                var red   = ((1 - cyan   ) * (1 - key)) * 255;
+                var green = ((1 - magenta) * (1 - key)) * 255;
+                var blue  = ((1 - yellow ) * (1 - key)) * 255;
+                
+                el("red").value = Math.round(red);
+                el("green").value = Math.round(green);
+                el("blue").value = Math.round(blue);
+                el("theColor").style.backgroundColor = "rgb(" + 
+						Math.round(red  ) + ", " + 
+						Math.round(green) + ", " + 
+						Math.round(blue ) + ")";
+            }
+            
+            el("red"       ).addEventListener("keyup", rgbChange);
+            el("green"     ).addEventListener("keyup", rgbChange);
+            el("blue"      ).addEventListener("keyup", rgbChange);
+            el("hue"       ).addEventListener("keyup", hslChange);
+            el("saturation").addEventListener("keyup", hslChange);
+            el("luminosity").addEventListener("keyup", hslChange);
+            el("cyan"      ).addEventListener("keyup", cmykChange);
+            el("magenta"   ).addEventListener("keyup", cmykChange);
+            el("yellow"    ).addEventListener("keyup", cmykChange);
+            el("key"       ).addEventListener("keyup", cmykChange);
+        </script>
+	</body>
+</html>
